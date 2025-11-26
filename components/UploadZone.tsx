@@ -1,15 +1,29 @@
 import React, { useCallback, useState } from 'react';
-import { useDropzone } from 'react-dropzone';
-import { UploadCloud, FileVideo, FileAudio, Loader2, Scan } from 'lucide-react';
+import { useDropzone, Accept } from 'react-dropzone';
+import { UploadCloud, FileVideo, FileAudio, Loader2, Scan, Image as ImageIcon } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { AnalysisStatus } from '../types';
 
 interface UploadZoneProps {
   onFileSelect: (file: File) => void;
   status: AnalysisStatus;
+  accept?: Accept;
+  title?: string;
+  subtitle?: string;
+  icon?: React.ReactNode;
 }
 
-export const UploadZone: React.FC<UploadZoneProps> = ({ onFileSelect, status }) => {
+export const UploadZone: React.FC<UploadZoneProps> = ({
+  onFileSelect,
+  status,
+  accept = {
+    'video/*': [],
+    'audio/*': []
+  },
+  title = "Upload Video or Audio",
+  subtitle = "Supports MP4, MOV, MP3, WAV",
+  icon
+}) => {
   const [isHovering, setIsHovering] = useState(false);
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
@@ -20,10 +34,7 @@ export const UploadZone: React.FC<UploadZoneProps> = ({ onFileSelect, status }) 
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
-    accept: {
-      'video/*': [],
-      'audio/*': []
-    },
+    accept,
     maxFiles: 1,
     disabled: status === AnalysisStatus.ANALYZING
   });
@@ -64,7 +75,7 @@ export const UploadZone: React.FC<UploadZoneProps> = ({ onFileSelect, status }) 
               </div>
               <div className="text-center space-y-2">
                 <h3 className="text-xl font-semibold text-white">Analyzing Media</h3>
-                <p className="text-slate-400">Running deepfake detection models...</p>
+                <p className="text-slate-400">Running analysis models...</p>
               </div>
             </motion.div>
           ) : (
@@ -81,30 +92,35 @@ export const UploadZone: React.FC<UploadZoneProps> = ({ onFileSelect, status }) 
                   {isDragActive ? (
                     <Scan className="w-10 h-10 text-indigo-400 animate-pulse" />
                   ) : (
-                    <UploadCloud className="w-10 h-10 text-slate-400 group-hover:text-indigo-400 transition-colors" />
+                    icon || (
+                      <UploadCloud className="w-10 h-10 text-slate-400 group-hover:text-indigo-400 transition-colors" />
+                    )
                   )}
                 </div>
               </div>
 
               <div className="space-y-2">
                 <h3 className="text-2xl font-bold text-white font-display">
-                  {isDragActive ? "Drop to Analyze" : "Upload Video or Audio"}
+                  {isDragActive ? "Drop to Analyze" : title}
                 </h3>
                 <p className="text-slate-400 max-w-xs mx-auto">
                   Drag & drop your file here, or click to browse.
                   <br />
-                  <span className="text-xs text-slate-500 mt-2 block">Supports MP4, MOV, MP3, WAV</span>
+                  <span className="text-xs text-slate-500 mt-2 block">{subtitle}</span>
                 </p>
               </div>
 
-              <div className="flex gap-4 mt-2">
-                <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-800/50 border border-slate-700 text-xs text-slate-400">
-                  <FileVideo className="w-3 h-3" /> Video
+              {/* Only show default icons if using default accept types */}
+              {!icon && (
+                <div className="flex gap-4 mt-2">
+                  <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-800/50 border border-slate-700 text-xs text-slate-400">
+                    <FileVideo className="w-3 h-3" /> Video
+                  </div>
+                  <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-800/50 border border-slate-700 text-xs text-slate-400">
+                    <FileAudio className="w-3 h-3" /> Audio
+                  </div>
                 </div>
-                <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-800/50 border border-slate-700 text-xs text-slate-400">
-                  <FileAudio className="w-3 h-3" /> Audio
-                </div>
-              </div>
+              )}
             </motion.div>
           )}
         </AnimatePresence>

@@ -64,7 +64,14 @@ export const ImageToEssay: React.FC = () => {
                 transition={{ delay: 0.1 }}
                 className="w-full max-w-2xl mb-12"
             >
-                <UploadZone onFileSelect={handleFileSelect} status={status} />
+                <UploadZone
+                    onFileSelect={handleFileSelect}
+                    status={status}
+                    accept={{ 'image/*': [] }}
+                    title="Upload Image"
+                    subtitle="Supports JPG, PNG, WEBP"
+                    icon={<Sparkles className="w-10 h-10 text-pink-400 group-hover:text-pink-300 transition-colors" />}
+                />
             </motion.div>
 
             {/* Result Section */}
