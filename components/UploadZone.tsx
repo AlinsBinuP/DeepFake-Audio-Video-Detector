@@ -45,11 +45,19 @@ export const UploadZone: React.FC<UploadZoneProps> = ({ onFileSelect, status }) 
 
   const validateAndProcess = (file: File) => {
     const validTypes = ['video/mp4', 'video/quicktime', 'video/webm', 'audio/mpeg', 'audio/wav', 'audio/mp3'];
-    if (validTypes.includes(file.type)) {
-      onFileSelect(file);
-    } else {
+    const maxSize = 20 * 1024 * 1024; // 20MB limit for inline data transfer
+
+    if (!validTypes.includes(file.type)) {
       alert("Please upload a supported video or audio format (MP4, MOV, WebM, MP3, WAV).");
+      return;
     }
+
+    if (file.size > maxSize) {
+      alert("File is too large. For this demo, please upload files smaller than 20MB.");
+      return;
+    }
+
+    onFileSelect(file);
   };
 
   const isAnalyzing = status === AnalysisStatus.ANALYZING;

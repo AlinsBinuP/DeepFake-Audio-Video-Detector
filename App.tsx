@@ -3,6 +3,7 @@ import { UploadZone } from './components/UploadZone';
 import { ResultsCard } from './components/ResultsCard';
 import { Features } from './components/Features';
 import { FloatingCard } from './components/FloatingCard';
+import { BackgroundParticles } from './components/BackgroundParticles';
 import { analyzeMedia } from './services/geminiService';
 import { AnalysisResult, AnalysisStatus } from './types';
 import { Activity, Github } from 'lucide-react';
@@ -35,13 +36,8 @@ const App: React.FC = () => {
   return (
     <div className="min-h-screen relative flex flex-col items-center overflow-hidden bg-[#f8fafc]">
       
-      {/* Background Decor - Minimal Grid */}
-      <div className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none"
-           style={{
-             backgroundImage: 'radial-gradient(#4f46e5 1px, transparent 1px)',
-             backgroundSize: '32px 32px'
-           }}
-      />
+      {/* Dynamic Background */}
+      <BackgroundParticles status={status} verdict={result?.verdict} />
 
       {/* Navigation / Header */}
       <header className="z-10 w-full max-w-6xl mx-auto p-6 flex justify-between items-center">

@@ -25,7 +25,7 @@ export const Features: React.FC = () => {
       <FeatureBlock 
         icon={<Zap className="h-6 w-6" />}
         title="Real-Time Analysis"
-        desc="Powered by Gemini Flash 2.5, our pipeline processes audio and visual data frames in seconds."
+        desc="Powered by AI, our pipeline processes audio and visual data frames in seconds."
         delay={1}
       />
       <FeatureBlock 
