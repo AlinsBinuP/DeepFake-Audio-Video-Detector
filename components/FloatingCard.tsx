@@ -1,35 +1,31 @@
-import React, { useMemo } from 'react';
+import React from 'react';
+import { motion } from 'framer-motion';
+import { clsx, type ClassValue } from 'clsx';
+import { twMerge } from 'tailwind-merge';
+
+function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
 
 interface FloatingCardProps {
   children: React.ReactNode;
   className?: string;
-  delay?: number; // Optional manual delay override
-  intensity?: 'low' | 'medium' | 'high';
+  delay?: number;
 }
 
-export const FloatingCard: React.FC<FloatingCardProps> = ({ 
-  children, 
-  className = '', 
-  delay,
-  intensity = 'medium'
-}) => {
-  // Generate random animation parameters to make the floating feel organic
-  const animationStyle = useMemo(() => {
-    const randomDuration = 5 + Math.random() * 4; // Between 5s and 9s
-    const randomDelay = delay !== undefined ? delay : Math.random() * -5; // Start at different offsets
-    
-    return {
-      animationDuration: `${randomDuration}s`,
-      animationDelay: `${randomDelay}s`,
-    };
-  }, [delay]);
-
+export const FloatingCard: React.FC<FloatingCardProps> = ({ children, className, delay = 0 }) => {
   return (
-    <div 
-      className={`floating transition-all duration-500 ease-in-out hover:shadow-2xl hover:scale-[1.02] ${className}`}
-      style={animationStyle}
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{
+        duration: 0.8,
+        delay: delay * 0.2,
+        ease: [0.22, 1, 0.36, 1]
+      }}
+      className={cn("glass-card rounded-2xl p-1", className)}
     >
       {children}
-    </div>
+    </motion.div>
   );
 };

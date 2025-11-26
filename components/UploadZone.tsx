@@ -1,6 +1,7 @@
-import React, { useState, useRef } from 'react';
-import { Upload, FileVideo, FileAudio, Loader2 } from 'lucide-react';
-import { FloatingCard } from './FloatingCard';
+import React, { useCallback, useState } from 'react';
+import { useDropzone } from 'react-dropzone';
+import { UploadCloud, FileVideo, FileAudio, Loader2, Scan } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { AnalysisStatus } from '../types';
 
 interface UploadZoneProps {
@@ -9,113 +10,105 @@ interface UploadZoneProps {
 }
 
 export const UploadZone: React.FC<UploadZoneProps> = ({ onFileSelect, status }) => {
-  const [isDragging, setIsDragging] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const [isHovering, setIsHovering] = useState(false);
 
-  const handleDragOver = (e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragging(true);
-  };
-
-  const handleDragLeave = (e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragging(false);
-  };
-
-  const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragging(false);
-    
-    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-      validateAndProcess(e.dataTransfer.files[0]);
+  const onDrop = useCallback((acceptedFiles: File[]) => {
+    if (acceptedFiles.length > 0) {
+      onFileSelect(acceptedFiles[0]);
     }
-  };
+  }, [onFileSelect]);
 
-  const handleClick = () => {
-    if (status !== AnalysisStatus.ANALYZING) {
-        inputRef.current?.click();
-    }
-  };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0) {
-      validateAndProcess(e.target.files[0]);
-    }
-  };
-
-  const validateAndProcess = (file: File) => {
-    const validTypes = ['video/mp4', 'video/quicktime', 'video/webm', 'audio/mpeg', 'audio/wav', 'audio/mp3'];
-    const maxSize = 20 * 1024 * 1024; // 20MB limit for inline data transfer
-
-    if (!validTypes.includes(file.type)) {
-      alert("Please upload a supported video or audio format (MP4, MOV, WebM, MP3, WAV).");
-      return;
-    }
-
-    if (file.size > maxSize) {
-      alert("File is too large. For this demo, please upload files smaller than 20MB.");
-      return;
-    }
-
-    onFileSelect(file);
-  };
-
-  const isAnalyzing = status === AnalysisStatus.ANALYZING;
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    accept: {
+      'video/*': [],
+      'audio/*': []
+    },
+    maxFiles: 1,
+    disabled: status === AnalysisStatus.ANALYZING
+  });
 
   return (
-    <FloatingCard className="w-full max-w-2xl cursor-pointer" delay={0}>
-      <div 
-        onClick={handleClick}
-        onDragOver={handleDragOver}
-        onDragLeave={handleDragLeave}
-        onDrop={handleDrop}
+    <div className="w-full">
+      <div
+        {...getRootProps()}
         className={`
-          relative overflow-hidden rounded-3xl border-2 border-dashed bg-white p-12 text-center transition-all duration-300
-          ${isDragging ? 'border-indigo-500 bg-indigo-50 shadow-xl' : 'border-gray-200 shadow-lg'}
-          ${isAnalyzing ? 'pointer-events-none opacity-80' : 'hover:border-indigo-300'}
+          relative group cursor-pointer
+          rounded-3xl border-2 border-dashed transition-all duration-500 ease-out
+          ${isDragActive ? 'border-indigo-400 bg-indigo-500/10 scale-[1.02]' : 'border-slate-700 hover:border-indigo-500/50 hover:bg-slate-800/50'}
+          ${status === AnalysisStatus.ANALYZING ? 'opacity-50 pointer-events-none border-transparent' : ''}
+          glass-card h-80 flex flex-col items-center justify-center overflow-hidden
         `}
+        onMouseEnter={() => setIsHovering(true)}
+        onMouseLeave={() => setIsHovering(false)}
       >
-        <input 
-          type="file" 
-          ref={inputRef} 
-          onChange={handleInputChange} 
-          className="hidden" 
-          accept="video/*,audio/*"
-        />
+        <input {...getInputProps()} />
 
-        <div className="flex flex-col items-center justify-center space-y-6">
-            {isAnalyzing ? (
-                 <div className="flex flex-col items-center animate-pulse">
-                    <div className="rounded-full bg-indigo-100 p-6 mb-4">
-                        <Loader2 className="h-12 w-12 text-indigo-600 animate-spin" />
-                    </div>
-                    <h3 className="text-2xl font-semibold text-gray-800">Analyzing Media...</h3>
-                    <p className="text-gray-500">Scanning for deep learning artifacts</p>
-                 </div>
-            ) : (
-                <>
-                    <div className={`rounded-full p-6 transition-colors ${isDragging ? 'bg-indigo-200' : 'bg-gray-50'}`}>
-                        <Upload className={`h-12 w-12 ${isDragging ? 'text-indigo-700' : 'text-gray-400'}`} />
-                    </div>
-                    
-                    <div className="space-y-2">
-                        <h3 className="text-2xl font-bold text-gray-800">
-                        {isDragging ? 'Drop it like it\'s hot' : 'Drop Video/Audio Here'}
-                        </h3>
-                        <p className="text-gray-500">
-                        or <span className="text-indigo-600 font-medium underline decoration-2 underline-offset-2">click to upload</span>
-                        </p>
-                    </div>
-
-                    <div className="flex items-center space-x-4 text-xs font-medium text-gray-400 uppercase tracking-wider">
-                        <span className="flex items-center"><FileVideo className="mr-1 h-3 w-3" /> MP4, MOV, WEBM</span>
-                        <span className="w-1 h-1 rounded-full bg-gray-300"></span>
-                        <span className="flex items-center"><FileAudio className="mr-1 h-3 w-3" /> MP3, WAV</span>
-                    </div>
-                </>
-            )}
+        {/* Animated Background Grid */}
+        <div className="absolute inset-0 opacity-[0.03] pointer-events-none"
+          style={{ backgroundImage: 'radial-gradient(#fff 1px, transparent 1px)', backgroundSize: '24px 24px' }}>
         </div>
+
+        <AnimatePresence mode="wait">
+          {status === AnalysisStatus.ANALYZING ? (
+            <motion.div
+              key="analyzing"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.8 }}
+              className="flex flex-col items-center gap-6 z-10"
+            >
+              <div className="relative">
+                <div className="absolute inset-0 bg-indigo-500 blur-xl opacity-20 animate-pulse"></div>
+                <Loader2 className="w-16 h-16 text-indigo-400 animate-spin relative z-10" />
+              </div>
+              <div className="text-center space-y-2">
+                <h3 className="text-xl font-semibold text-white">Analyzing Media</h3>
+                <p className="text-slate-400">Running deepfake detection models...</p>
+              </div>
+            </motion.div>
+          ) : (
+            <motion.div
+              key="upload"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              className="flex flex-col items-center gap-6 z-10 p-8 text-center"
+            >
+              <div className="relative group-hover:scale-110 transition-transform duration-500">
+                <div className="absolute inset-0 bg-indigo-500 blur-2xl opacity-0 group-hover:opacity-20 transition-opacity duration-500 rounded-full"></div>
+                <div className="w-20 h-20 bg-slate-800/50 rounded-2xl flex items-center justify-center border border-slate-700 group-hover:border-indigo-500/50 transition-colors">
+                  {isDragActive ? (
+                    <Scan className="w-10 h-10 text-indigo-400 animate-pulse" />
+                  ) : (
+                    <UploadCloud className="w-10 h-10 text-slate-400 group-hover:text-indigo-400 transition-colors" />
+                  )}
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <h3 className="text-2xl font-bold text-white font-display">
+                  {isDragActive ? "Drop to Analyze" : "Upload Video or Audio"}
+                </h3>
+                <p className="text-slate-400 max-w-xs mx-auto">
+                  Drag & drop your file here, or click to browse.
+                  <br />
+                  <span className="text-xs text-slate-500 mt-2 block">Supports MP4, MOV, MP3, WAV</span>
+                </p>
+              </div>
+
+              <div className="flex gap-4 mt-2">
+                <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-800/50 border border-slate-700 text-xs text-slate-400">
+                  <FileVideo className="w-3 h-3" /> Video
+                </div>
+                <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-800/50 border border-slate-700 text-xs text-slate-400">
+                  <FileAudio className="w-3 h-3" /> Audio
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
-    </FloatingCard>
+    </div>
   );
 };

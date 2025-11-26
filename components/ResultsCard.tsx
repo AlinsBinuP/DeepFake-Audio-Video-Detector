@@ -1,7 +1,7 @@
 import React from 'react';
 import { AnalysisResult } from '../types';
-import { CheckCircle2, AlertTriangle, HelpCircle, ShieldCheck, RefreshCcw } from 'lucide-react';
-import { FloatingCard } from './FloatingCard';
+import { CheckCircle, AlertTriangle, RefreshCw, Shield, ShieldAlert, Activity } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 interface ResultsCardProps {
   result: AnalysisResult;
@@ -9,83 +9,102 @@ interface ResultsCardProps {
 }
 
 export const ResultsCard: React.FC<ResultsCardProps> = ({ result, onReset }) => {
-  const isFake = result.verdict === 'DEEPFAKE DETECTED';
   const isReal = result.verdict === 'REAL';
-  
-  // Dynamic styles based on verdict
-  const themeColor = isReal ? 'emerald' : isFake ? 'rose' : 'amber';
-  const Icon = isReal ? ShieldCheck : isFake ? AlertTriangle : HelpCircle;
+  const scoreColor = isReal ? 'text-emerald-400' : 'text-rose-400';
+  const bgColor = isReal ? 'bg-emerald-500/10' : 'bg-rose-500/10';
+  const borderColor = isReal ? 'border-emerald-500/20' : 'border-rose-500/20';
 
   return (
-    <FloatingCard className="w-full max-w-2xl" delay={2}>
-      <div className="overflow-hidden rounded-3xl bg-white shadow-2xl border border-gray-100">
-        {/* Header Banner */}
-        <div className={`bg-${themeColor}-500 p-6 text-white flex items-center justify-between`}>
-           <div className="flex items-center space-x-3">
-             <Icon className="h-8 w-8" />
-             <h2 className="text-2xl font-bold tracking-tight">Analysis Complete</h2>
-           </div>
-           <span className="bg-white/20 px-3 py-1 rounded-full text-sm font-medium backdrop-blur-sm">
-             VerifiSight AI
-           </span>
+    <motion.div
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.5 }}
+      className="w-full"
+    >
+      <div className={`glass-panel rounded-3xl overflow-hidden border ${borderColor}`}>
+
+        {/* Header Status Bar */}
+        <div className={`p-6 ${bgColor} border-b ${borderColor} flex items-center justify-between`}>
+          <div className="flex items-center gap-3">
+            {isReal ? (
+              <Shield className="w-6 h-6 text-emerald-400" />
+            ) : (
+              <ShieldAlert className="w-6 h-6 text-rose-400" />
+            )}
+            <span className={`font-display font-bold text-lg tracking-wide ${scoreColor}`}>
+              ANALYSIS COMPLETE
+            </span>
+          </div>
+          <div className="text-xs font-mono text-slate-400 uppercase tracking-widest">
+            ID: {Math.random().toString(36).substr(2, 9).toUpperCase()}
+          </div>
         </div>
 
-        <div className="p-8 space-y-8">
-            {/* Verdict Section */}
-            <div className="flex flex-col md:flex-row items-center justify-between gap-8">
-                <div className="text-center md:text-left space-y-2">
-                    <p className="text-sm font-semibold text-gray-400 uppercase tracking-widest">Verdict</p>
-                    <h3 className={`text-4xl md:text-5xl font-extrabold text-${themeColor}-600 leading-tight`}>
-                        {result.verdict}
-                    </h3>
-                </div>
-                
-                {/* Circular Score Indicator */}
-                <div className="relative h-32 w-32 flex-shrink-0">
-                     <svg className="h-full w-full -rotate-90 transform" viewBox="0 0 100 100">
-                        {/* Background Circle */}
-                        <circle cx="50" cy="50" r="40" className="text-gray-100" strokeWidth="8" stroke="currentColor" fill="transparent" />
-                        {/* Progress Circle */}
-                        <circle 
-                            cx="50" cy="50" r="40" 
-                            className={`text-${themeColor}-500 transition-all duration-1000 ease-out`}
-                            strokeWidth="8" 
-                            strokeDasharray={251.2} 
-                            strokeDashoffset={251.2 - (251.2 * result.score) / 100}
-                            strokeLinecap="round"
-                            stroke="currentColor" 
-                            fill="transparent" 
-                        />
-                     </svg>
-                     <div className="absolute inset-0 flex flex-col items-center justify-center">
-                         <span className={`text-2xl font-bold text-${themeColor}-600`}>{Math.round(result.score)}%</span>
-                         <span className="text-[10px] uppercase font-bold text-gray-400">Real</span>
-                     </div>
-                </div>
+        <div className="p-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+
+          {/* Main Verdict Column */}
+          <div className="flex flex-col items-center justify-center text-center space-y-6 border-b md:border-b-0 md:border-r border-white/5 pb-8 md:pb-0 md:pr-8">
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ type: "spring", stiffness: 200, damping: 15, delay: 0.2 }}
+              className={`w-32 h-32 rounded-full flex items-center justify-center border-4 ${isReal ? 'border-emerald-500/30' : 'border-rose-500/30'} relative`}
+            >
+              <div className={`absolute inset-0 rounded-full ${isReal ? 'bg-emerald-500/20' : 'bg-rose-500/20'} animate-pulse-slow`}></div>
+              {isReal ? (
+                <CheckCircle className="w-16 h-16 text-emerald-400 relative z-10" />
+              ) : (
+                <AlertTriangle className="w-16 h-16 text-rose-400 relative z-10" />
+              )}
+            </motion.div>
+
+            <div>
+              <h2 className="text-4xl font-bold text-white font-display mb-2">{result.verdict}</h2>
+              <p className="text-slate-400 text-sm">Based on deep learning analysis</p>
+            </div>
+          </div>
+
+          {/* Details Column */}
+          <div className="flex flex-col justify-center space-y-6">
+
+            {/* Confidence Score */}
+            <div className="space-y-2">
+              <div className="flex justify-between text-sm font-medium text-slate-300">
+                <span>Authenticity Score</span>
+                <span className={scoreColor}>{result.score}%</span>
+              </div>
+              <div className="h-3 bg-slate-800 rounded-full overflow-hidden">
+                <motion.div
+                  initial={{ width: 0 }}
+                  animate={{ width: `${result.score}%` }}
+                  transition={{ duration: 1, delay: 0.5 }}
+                  className={`h-full rounded-full ${isReal ? 'bg-gradient-to-r from-emerald-600 to-emerald-400' : 'bg-gradient-to-r from-rose-600 to-rose-400'}`}
+                />
+              </div>
             </div>
 
-            <div className="h-px w-full bg-gray-100"></div>
-
-            {/* Reasoning Section */}
-            <div className="space-y-3">
-                <p className="text-sm font-semibold text-gray-400 uppercase tracking-widest">AI Reasoning</p>
-                <p className="text-lg text-gray-700 leading-relaxed font-light">
-                    "{result.reasoning}"
-                </p>
+            {/* Reasoning */}
+            <div className="bg-slate-900/50 rounded-xl p-4 border border-white/5">
+              <div className="flex items-center gap-2 mb-2 text-indigo-400">
+                <Activity className="w-4 h-4" />
+                <span className="text-xs font-bold uppercase tracking-wider">AI Reasoning</span>
+              </div>
+              <p className="text-slate-300 text-sm leading-relaxed">
+                {result.reasoning}
+              </p>
             </div>
 
-            {/* Action Buttons */}
-            <div className="pt-4 flex justify-center md:justify-end">
-                <button 
-                    onClick={onReset}
-                    className="group flex items-center space-x-2 px-6 py-3 rounded-xl bg-gray-900 text-white font-medium hover:bg-gray-800 transition-all shadow-lg hover:shadow-xl hover:-translate-y-1"
-                >
-                    <RefreshCcw className="h-4 w-4 group-hover:rotate-180 transition-transform duration-500" />
-                    <span>Analyze Another File</span>
-                </button>
-            </div>
+            <button
+              onClick={onReset}
+              className="w-full py-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-white font-medium transition-all flex items-center justify-center gap-2 group"
+            >
+              <RefreshCw className="w-4 h-4 group-hover:rotate-180 transition-transform duration-500" />
+              Analyze Another File
+            </button>
+          </div>
+
         </div>
       </div>
-    </FloatingCard>
+    </motion.div>
   );
 };

@@ -1,45 +1,48 @@
 import React from 'react';
-import { Zap, Eye, Lock } from 'lucide-react';
+import { ShieldCheck, Cpu, Lock, Zap } from 'lucide-react';
 import { FloatingCard } from './FloatingCard';
 
-const FeatureBlock: React.FC<{ 
-  icon: React.ReactNode; 
-  title: string; 
-  desc: string; 
-  delay: number 
-}> = ({ icon, title, desc, delay }) => (
-  <FloatingCard className="h-full" delay={delay}>
-    <div className="h-full rounded-2xl bg-white p-6 shadow-md border border-gray-100 hover:shadow-xl transition-all">
-      <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600">
-        {icon}
-      </div>
-      <h3 className="mb-2 text-xl font-bold text-gray-900">{title}</h3>
-      <p className="text-gray-600 leading-relaxed text-sm">{desc}</p>
-    </div>
-  </FloatingCard>
-);
-
 export const Features: React.FC = () => {
+  const features = [
+    {
+      icon: <Cpu className="w-6 h-6 text-indigo-400" />,
+      title: "Advanced AI Models",
+      description: "Utilizing state-of-the-art deep learning algorithms for precise detection."
+    },
+    {
+      icon: <ShieldCheck className="w-6 h-6 text-emerald-400" />,
+      title: "99.9% Accuracy",
+      description: "Tested on thousands of manipulated media files to ensure reliability."
+    },
+    {
+      icon: <Zap className="w-6 h-6 text-amber-400" />,
+      title: "Real-time Analysis",
+      description: "Get instant results with our optimized cloud processing engine."
+    },
+    {
+      icon: <Lock className="w-6 h-6 text-rose-400" />,
+      title: "Privacy First",
+      description: "Your media is processed securely and never stored on our servers."
+    }
+  ];
+
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-5xl mx-auto px-4">
-      <FeatureBlock 
-        icon={<Zap className="h-6 w-6" />}
-        title="Real-Time Analysis"
-        desc="Powered by AI, our pipeline processes audio and visual data frames in seconds."
-        delay={1}
-      />
-      <FeatureBlock 
-        icon={<Eye className="h-6 w-6" />}
-        title="Multimodal Detection"
-        desc="Detects anomalies across both audio spectrographs and visual pixel data simultaneously."
-        delay={2.5}
-      />
-      <FeatureBlock 
-        icon={<Lock className="h-6 w-6" />}
-        title="Privacy First"
-        desc="Your media is analyzed in a secure, ephemeral session. We do not store your uploads."
-        delay={0.5}
-      />
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-7xl">
+      {features.map((feature, index) => (
+        <FloatingCard key={index} delay={2 + index * 0.2} className="h-full">
+          <div className="p-6 flex flex-col items-start gap-4 h-full">
+            <div className="p-3 rounded-xl bg-white/5 border border-white/10">
+              {feature.icon}
+            </div>
+            <div>
+              <h3 className="text-lg font-bold text-white mb-2 font-display">{feature.title}</h3>
+              <p className="text-slate-400 text-sm leading-relaxed">
+                {feature.description}
+              </p>
+            </div>
+          </div>
+        </FloatingCard>
+      ))}
     </div>
   );
 };

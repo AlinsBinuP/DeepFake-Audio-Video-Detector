@@ -2,13 +2,11 @@ import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 
 export default defineConfig(({ mode }) => {
-  // Fix: Cast process to any to resolve TS error with process.cwd() when node types are missing
-  const env = loadEnv(mode, (process as any).cwd(), '');
+  const env = loadEnv(mode, process.cwd(), '');
   return {
     plugins: [react()],
-    define: {
-      // critical: maps process.env.API_KEY to the environment variable at build time
-      'process.env.API_KEY': JSON.stringify(env.API_KEY),
-    },
+    // No need to define process.env.API_KEY manually for Vite if using import.meta.env
+    // But if we want to keep using process.env in code (not recommended for Vite), we'd keep it.
+    // We will switch to import.meta.env in the service file.
   };
 });

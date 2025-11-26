@@ -1,0 +1,2 @@
+﻿components/UploadZone.tsx(2,29): error TS2307: Cannot find module 'react-dropzone' or its corresponding type declarations.
+services/geminiService.ts(4,50): error TS2339: Property 'env' does not exist on type 'ImportMeta'.
