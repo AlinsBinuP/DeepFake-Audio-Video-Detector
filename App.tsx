@@ -121,7 +121,7 @@ const App: React.FC = () => {
       {/* Footer */}
       <footer className="z-10 w-full p-8 mt-12 text-center text-slate-500 text-sm border-t border-white/5 bg-black/20 backdrop-blur-xl">
         <div className="flex flex-col items-center gap-4">
-          <p>&copy; {new Date().getFullYear()} VerifiSight AI. Powered by Gemini 1.5 Flash.</p>
+          <p>&copy; {new Date().getFullYear()} VerifiSight AI. By Alins Binu.</p>
           <div className="flex gap-6">
             <a href="#" className="hover:text-white transition-colors"><Github className="w-5 h-5" /></a>
           </div>
