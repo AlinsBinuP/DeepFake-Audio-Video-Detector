@@ -75,7 +75,8 @@ export const ImageGenerator: React.FC = () => {
             window.URL.revokeObjectURL(url);
         } catch (err) {
             console.error("Download failed", err);
-            setError("Failed to download image.");
+            setError("Download failed. Opening in new tab...");
+            window.open(generatedImage, '_blank');
         }
     };
 
@@ -209,7 +210,7 @@ export const ImageGenerator: React.FC = () => {
 
                                     {/* Overlay Actions */}
                                     <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-between p-8">
-                                        <div className="text-white/90 text-sm font-medium line-clamp-2 max-w-[70%] backdrop-blur-sm bg-black/30 p-2 rounded-lg border border-white/5">
+                                        <div className="text-white/90 text-sm font-medium max-w-[70%] max-h-[150px] overflow-y-auto backdrop-blur-sm bg-black/40 p-3 rounded-xl border border-white/10 scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent">
                                             {prompt}
                                         </div>
                                         <div className="flex gap-3">
