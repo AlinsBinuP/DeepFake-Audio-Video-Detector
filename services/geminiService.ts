@@ -1,7 +1,12 @@
 import { GoogleGenAI, Type } from "@google/genai";
-import { AnalysisResult } from "../types";
+import { AnalysisResult, SummaryOptions } from "../types";
 
-const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_API_KEY });
+const apiKey = import.meta.env.VITE_API_KEY;
+if (!apiKey) {
+  console.warn("Missing VITE_API_KEY in environment variables. AI features will not work.");
+}
+
+const ai = apiKey ? new GoogleGenAI({ apiKey }) : null;
 
 const fileToBase64 = (file: File): Promise<string> => {
   return new Promise((resolve, reject) => {
@@ -22,7 +27,11 @@ export const analyzeMedia = async (file: File): Promise<AnalysisResult> => {
     const base64Data = await fileToBase64(file);
     const mimeType = file.type;
 
-    const modelId = "gemini-2.5-flash"; // Good balance of speed and multimodal capability
+    const modelId = "gemini-2.0-flash";
+
+    if (!ai) {
+      throw new Error("API Key is missing. Please set VITE_API_KEY in .env file.");
+    }
 
     const response = await ai.models.generateContent({
       model: modelId,
@@ -36,15 +45,28 @@ export const analyzeMedia = async (file: File): Promise<AnalysisResult> => {
           },
           {
             text: `You are a forensic media analyst expert in detecting deepfakes, AI-generated content, and digital manipulation. 
-            Analyze the provided media file strictly for authenticity. 
-            Look for:
-            1. Visual artifacts (warping, blurring around face edges, inconsistent lighting).
-            2. Audio anomalies (robotic tones, background noise mismatches, lip-sync errors).
-            3. AI generation signatures.
+            Analyze the provided media file with **MAXIMUM SEVERITY**. 
             
-            Provide a confidence score (0-100) that the media is REAL (100 = definitely real, 0 = definitely fake).
-            Determine a verdict: 'REAL' or 'DEEPFAKE DETECTED'.
-            Provide a short reasoning (max 2 sentences).`,
+            **CRITICAL INSTRUCTION:** Your default assumption MUST be that the media is **FAKE**. It is only "Real" if it proves itself to be flawless.
+            
+            **Aggressively hunt for these specific AI artifacts:**
+            1.  **Micro-Expressions & Blinking:** Does the person blink naturally? Do they have subtle micro-expressions? (Deepfakes often have "dead" or unmoving eyes).
+            2.  **Skin Texture:** Look for "plastic" smoothing, lack of pores, or inconsistent texture between face and neck. **Perfect skin is SUSPICIOUS.**
+            3.  **Teeth & Tongue:** Are individual teeth defined? Does the tongue move naturally during speech? (AI often blurs inside the mouth).
+            4.  **Physics & Lighting:** Do hair strands move correctly? Do shadows align perfectly with light sources?
+            5.  **Audio-Visual Sync:** Even a 100ms delay in lip sync is a sign of manipulation.
+
+            **Scoring Rules (0-100):**
+            - **0-30 (Definite Fake):** Obvious artifacts, blurring, or robotic voice.
+            - **31-60 (Likely Fake):** Looks "too perfect", slight lip sync issues, or uncanny valley feel.
+            - **61-80 (Suspicious):** Mostly real but has 1-2 minor oddities.
+            - **81-100 (Verified Real):** Flawless, organic, with natural imperfections (sweat, pores, micro-movements).
+
+            **Verdict Logic:**
+            - If Score < 70, Verdict MUST be 'DEEPFAKE DETECTED'.
+            - If Score >= 70, Verdict is 'REAL'.
+
+            Provide a short reasoning (max 2 sentences) focusing on the *most suspicious* element found.`,
           },
         ],
       },
@@ -70,7 +92,7 @@ export const analyzeMedia = async (file: File): Promise<AnalysisResult> => {
   } catch (error) {
     console.error("Analysis Error:", error);
     // Fallback for demo purposes if API fails or blocks content
-    throw new Error("Failed to analyze media. Ensure the file is a supported video or audio format.");
+    throw new Error(error instanceof Error ? error.message : "Failed to analyze media.");
   }
 };
 
@@ -78,7 +100,11 @@ export const generateEssay = async (file: File, prompt?: string): Promise<string
   try {
     const base64Data = await fileToBase64(file);
     const mimeType = file.type;
-    const modelId = "gemini-2.5-flash";
+    const modelId = "gemini-2.0-flash";
+
+    if (!ai) {
+      throw new Error("API Key is missing. Please set VITE_API_KEY in .env file.");
+    }
 
     const response = await ai.models.generateContent({
       model: modelId,
@@ -106,55 +132,216 @@ export const generateEssay = async (file: File, prompt?: string): Promise<string
 
 export const generateImage = async (prompt: string): Promise<string> => {
   try {
-    const modelId = "imagen-3.0-generate-001";
+    // Since the user's API key does not have access to Imagen 3 (common for free tier),
+    // we use Pollinations.ai (Flux model) which provides high-quality, free image generation.
+    // This ensures the feature works beautifully for the user immediately.
+
+    const encodedPrompt = encodeURIComponent(prompt);
+    // Use Flux model for high quality, realistic images
+    const imageUrl = `https://pollinations.ai/p/${encodedPrompt}?width=1024&height=1024&seed=${Math.floor(Math.random() * 1000)}&model=flux`;
+
+    // Pre-load the image using standard HTML Image object to avoid CORS issues with fetch
+    await new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => resolve(true);
+      img.onerror = () => reject(new Error("Failed to load image from provider"));
+      img.src = imageUrl;
+    });
+
+    // Return the URL directly
+    return imageUrl;
+
+  } catch (error) {
+    console.error("Image Generation Error:", error);
+    throw new Error("Failed to generate image. Please try again.");
+  }
+};
+
+export const summarizeDocument = async (content: File | string, options: SummaryOptions): Promise<string> => {
+  try {
+    const modelId = "gemini-2.0-flash";
+
+    if (!ai) {
+      throw new Error("API Key is missing. Please set VITE_API_KEY in .env file.");
+    }
+
+    let parts: any[] = [];
+
+    if (typeof content === 'string') {
+      parts.push({ text: content });
+    } else {
+      const base64Data = await fileToBase64(content);
+      parts.push({
+        inlineData: {
+          mimeType: content.type,
+          data: base64Data
+        }
+      });
+    }
+
+    const prompt = `You are an expert document summarizer.
+    Please provide a summary of the provided content.
+    
+    Configuration:
+    - Length: ${options.length}
+    - Format: ${options.format}
+    
+    Ensure the summary is accurate, well-structured, and captures the main ideas.`;
+
+    parts.push({ text: prompt });
+
+    const response = await ai.models.generateContent({
+      model: modelId,
+      contents: {
+        parts: parts,
+      },
+    });
+
+    return response.text || "Failed to generate summary.";
+  } catch (error) {
+    console.error("Summarization Error:", error);
+    throw new Error("Failed to summarize document.");
+  }
+};
+
+export const analyzeScene = async (file: File): Promise<{
+  description: string;
+  objects: string[];
+  text_content: string;
+  colors: string[];
+}> => {
+  try {
+    const base64Data = await fileToBase64(file);
+    const mimeType = file.type;
+    const modelId = "gemini-2.0-flash";
+
+    if (!ai) {
+      throw new Error("API Key is missing. Please set VITE_API_KEY in .env file.");
+    }
 
     const response = await ai.models.generateContent({
       model: modelId,
       contents: {
         parts: [
           {
-            text: prompt,
+            inlineData: {
+              mimeType: mimeType,
+              data: base64Data,
+            },
+          },
+          {
+            text: `Analyze this image in detail. Provide a structured response with:
+            1. A detailed description of the scene (2-3 sentences).
+            2. A list of main objects detected.
+            3. Any text found in the image (OCR).
+            4. The dominant colors in the image.
+            
+            Return ONLY valid JSON.`,
           },
         ],
       },
       config: {
-        responseMimeType: "image/jpeg",
-      }
+        responseMimeType: "application/json",
+        responseSchema: {
+          type: Type.OBJECT,
+          properties: {
+            description: { type: Type.STRING },
+            objects: { type: Type.ARRAY, items: { type: Type.STRING } },
+            text_content: { type: Type.STRING },
+            colors: { type: Type.ARRAY, items: { type: Type.STRING } },
+          },
+          required: ["description", "objects", "text_content", "colors"],
+        },
+      },
     });
 
-    // The SDK for Imagen usually returns the image data in the response.
-    // We need to check how to extract it. 
-    // Based on common patterns for this SDK with Imagen:
-    // It might return a base64 string in the candidates or parts.
+    if (response.text) {
+      return JSON.parse(response.text);
+    } else {
+      throw new Error("No response from AI");
+    }
+  } catch (error) {
+    console.error("Scene Analysis Error:", error);
+    throw new Error("Failed to analyze scene.");
+  }
+};
 
-    // Let's inspect the response structure if possible, but for now we assume standard handling.
-    // If the SDK returns the image directly as base64 in the text field (unlikely for binary) 
-    // or as inline data.
+export const summarizeYouTubeVideo = async (transcript: string, videoTitle: string): Promise<{
+  summary: string;
+  keyPoints: string[];
+  timestamps: { time: string; topic: string }[];
+  studyNotes: string;
+}> => {
+  try {
+    const modelId = "gemini-2.0-flash";
 
-    // Actually, for the new Google GenAI SDK, image generation might be slightly different.
-    // But let's try the standard generateContent first.
-
-    // If the response contains inlineData:
-    const candidates = response.candidates;
-    if (candidates && candidates.length > 0) {
-      const parts = candidates[0].content.parts;
-      if (parts && parts.length > 0) {
-        const part = parts[0];
-        if (part.inlineData && part.inlineData.data) {
-          return `data:${part.inlineData.mimeType || 'image/jpeg'};base64,${part.inlineData.data}`;
-        }
-      }
+    if (!ai) {
+      throw new Error("API Key is missing. Please set VITE_API_KEY in .env file.");
     }
 
-    // Fallback if structure is different (e.g. some versions return it differently)
-    // If we can't get it, we throw to trigger the catch.
-    throw new Error("No image data found in response");
+    const response = await ai.models.generateContent({
+      model: modelId,
+      contents: {
+        parts: [
+          {
+            text: `You are an expert educational assistant helping students study. Analyze this video transcript and create comprehensive study notes.
 
+Video Title: ${videoTitle}
+
+Transcript:
+${transcript}
+
+Generate structured study notes with:
+1. A concise summary (2-3 sentences)
+2. Key points (5-7 main takeaways)
+3. Important timestamps with topics (if timestamps are present in transcript)
+4. Detailed study notes in markdown format with sections, bullet points, and important concepts highlighted
+
+Return ONLY valid JSON.`,
+          },
+        ],
+      },
+      config: {
+        responseMimeType: "application/json",
+        responseSchema: {
+          type: Type.OBJECT,
+          properties: {
+            summary: { type: Type.STRING },
+            keyPoints: { type: Type.ARRAY, items: { type: Type.STRING } },
+            timestamps: {
+              type: Type.ARRAY,
+              items: {
+                type: Type.OBJECT,
+                properties: {
+                  time: { type: Type.STRING },
+                  topic: { type: Type.STRING }
+                }
+              }
+            },
+            studyNotes: { type: Type.STRING },
+          },
+          required: ["summary", "keyPoints", "timestamps", "studyNotes"],
+        },
+      },
+    });
+
+    const responseText = response.text;
+    if (responseText) {
+      // Clean the response text: remove markdown code blocks if present
+      const cleanText = responseText.replace(/```json\n?|\n?```/g, '').trim();
+      return JSON.parse(cleanText);
+    } else {
+      throw new Error("No response from AI");
+    }
   } catch (error) {
-    console.error("Image Generation Error:", error);
-    // Fallback to a placeholder if the API fails (e.g. no access to Imagen)
-    // This ensures the UI doesn't break completely for the user.
-    console.warn("Falling back to placeholder image due to API error.");
-    return "https://picsum.photos/1024/1024?random=" + Math.random();
+    console.error("YouTube Summarization Error:", error);
+    // Return a more specific error message if possible
+    if (error instanceof Error) {
+      if (error.message.includes("API key not valid") || error.message.includes("API_KEY_INVALID")) {
+        throw new Error("Invalid API Key. Please check your .env file and ensure VITE_API_KEY is correct.");
+      }
+      throw new Error(`Failed to summarize video: ${error.message}`);
+    }
+    throw new Error("Failed to summarize video due to an unexpected error.");
   }
 };

@@ -1,61 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>VerifiSight AI | Deepfake Detection</title>
-    <meta name="description" content="Instantly analyze media authenticity using state-of-the-art deep learning models." />
-    
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="VerifiSight AI | Deepfake Detection" />
-    <meta property="og:description" content="Instantly analyze media authenticity using state-of-the-art deep learning models." />
-    
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-      @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
 
-      body {
-        font-family: 'Space Grotesk', sans-serif;
-        background-color: #f8fafc; /* Slate 50 */
-        overflow-x: hidden;
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prism Studio | Your Complete AI Toolkit</title>
+  <meta name="description"
+    content="Your all-in-one AI powerhouse. Generate images, enhance photos, analyze content, and transform your workflow with 12+ powerful AI tools." />
+  <meta property="og:title" content="Prism Studio | Your Complete AI Toolkit" />
+  <meta property="og:description"
+    content="Your all-in-one AI powerhouse. Generate images, enhance photos, analyze content, and transform your workflow with 12+ powerful AI tools." />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      background-color: #f8fafc;
+      /* Slate 50 */
+      overflow-x: hidden;
+    }
+
+    /* Custom Gravity/Float Animations */
+    @keyframes float {
+      0% {
+        transform: translateY(0px) rotate(0deg);
       }
 
-      /* Custom Gravity/Float Animations */
-      @keyframes float {
-        0% { transform: translateY(0px) rotate(0deg); }
-        33% { transform: translateY(-10px) rotate(0.5deg); }
-        66% { transform: translateY(5px) rotate(-0.5deg); }
-        100% { transform: translateY(0px) rotate(0deg); }
+      33% {
+        transform: translateY(-10px) rotate(0.5deg);
       }
 
-      .floating {
-        animation-name: float;
-        animation-iteration-count: infinite;
-        animation-timing-function: ease-in-out;
+      66% {
+        transform: translateY(5px) rotate(-0.5deg);
       }
 
-      /* Utility for non-selectable text in UI elements */
-      .no-select {
-        user-select: none;
+      100% {
+        transform: translateY(0px) rotate(0deg);
       }
-    </style>
-  <script type="importmap">
-{
-  "imports": {
-    "react": "https://aistudiocdn.com/react@^19.2.0",
-    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
-    "react/": "https://aistudiocdn.com/react@^19.2.0/",
-    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.30.0",
-    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.555.0",
-    "vite": "https://aistudiocdn.com/vite@^7.2.4",
-    "@vitejs/plugin-react": "https://aistudiocdn.com/@vitejs/plugin-react@^5.1.1"
-  }
-}
-</script>
+    }
+
+    .floating {
+      animation-name: float;
+      animation-iteration-count: infinite;
+      animation-timing-function: ease-in-out;
+    }
+
+    /* Utility for non-selectable text in UI elements */
+    .no-select {
+      user-select: none;
+    }
+  </style>
 </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/index.tsx"></script>
-  </body>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+
 </html>

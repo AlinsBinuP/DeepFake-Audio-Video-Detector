@@ -74,26 +74,6 @@ export const BackgroundParticles: React.FC<BackgroundParticlesProps> = ({ status
       if (!ctx || !canvas) return;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Dynamic background color based on status
-      let gradient = ctx.createRadialGradient(canvas.width / 2, canvas.height / 2, 0, canvas.width / 2, canvas.height / 2, canvas.width);
-
-      if (status === AnalysisStatus.ANALYZING) {
-        gradient.addColorStop(0, '#1e1b4b'); // Indigo 950
-        gradient.addColorStop(1, '#020617'); // Slate 950
-      } else if (status === AnalysisStatus.COMPLETE && verdict === 'REAL') {
-        gradient.addColorStop(0, '#064e3b'); // Emerald 900
-        gradient.addColorStop(1, '#020617');
-      } else if (status === AnalysisStatus.COMPLETE && verdict === 'DEEPFAKE DETECTED') {
-        gradient.addColorStop(0, '#881337'); // Rose 900
-        gradient.addColorStop(1, '#020617');
-      } else {
-        gradient.addColorStop(0, '#0f172a'); // Slate 900
-        gradient.addColorStop(1, '#020617');
-      }
-
-      ctx.fillStyle = gradient;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
       particles.forEach(particle => {
         particle.update();
         particle.draw();
@@ -109,12 +89,30 @@ export const BackgroundParticles: React.FC<BackgroundParticlesProps> = ({ status
       window.removeEventListener('resize', resizeCanvas);
       cancelAnimationFrame(animationFrameId);
     };
-  }, [status, verdict]);
+  }, []);
+
+  const getBackgroundGradient = () => {
+    const centerColor = (() => {
+      if (status === AnalysisStatus.ANALYZING) return '#1e1b4b'; // Indigo 950
+      if (status === AnalysisStatus.COMPLETE) {
+        if (verdict === 'REAL') return '#064e3b'; // Emerald 900
+        if (verdict === 'DEEPFAKE DETECTED') return '#881337'; // Rose 900
+      }
+      return '#0f172a'; // Slate 900
+    })();
+
+    return `radial-gradient(circle at center, ${centerColor} 0%, #020617 100%)`;
+  };
 
   return (
-    <canvas
-      ref={canvasRef}
-      className="absolute inset-0 z-0 pointer-events-none"
-    />
+    <div
+      className="fixed inset-0 z-0 pointer-events-none transition-[background] duration-1000 ease-in-out"
+      style={{ background: getBackgroundGradient() }}
+    >
+      <canvas
+        ref={canvasRef}
+        className="absolute inset-0 w-full h-full"
+      />
+    </div>
   );
 };

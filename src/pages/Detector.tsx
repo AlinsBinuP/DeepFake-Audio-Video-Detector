@@ -7,7 +7,7 @@ import { analyzeMedia } from '../../services/geminiService';
 import { AnalysisResult, AnalysisStatus } from '../../types';
 import { motion, AnimatePresence } from 'framer-motion';
 
-export const Home: React.FC = () => {
+export const Detector: React.FC = () => {
     const [status, setStatus] = useState<AnalysisStatus>(AnalysisStatus.IDLE);
     const [result, setResult] = useState<AnalysisResult | null>(null);
     const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -34,8 +34,11 @@ export const Home: React.FC = () => {
 
     return (
         <>
-            {/* Dynamic Background */}
-            <BackgroundParticles status={status} verdict={result?.verdict} />
+            {/* Dynamic Background - Indigo/Blue Theme */}
+            <div className="fixed inset-0 z-0 pointer-events-none">
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-indigo-900/20 via-slate-950 to-black"></div>
+                <BackgroundParticles status={status} verdict={result?.verdict} />
+            </div>
 
             {/* Main Content Area */}
             <main className="z-10 flex-1 w-full flex flex-col items-center justify-center p-4 sm:p-8 space-y-12 sm:space-y-16 max-w-7xl mx-auto">
@@ -48,7 +51,7 @@ export const Home: React.FC = () => {
                             exit={{ opacity: 0, y: -20 }}
                             className="text-center space-y-8 max-w-4xl"
                         >
-                            <h1 className="text-6xl sm:text-8xl font-bold text-white tracking-tight leading-[1.1] drop-shadow-2xl">
+                            <h1 className="text-6xl sm:text-8xl font-bold text-white tracking-tight leading-[1.1] drop-shadow-2xl font-display">
                                 Truth in <br />
                                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 animate-gradient-x">
                                     Every Pixel.

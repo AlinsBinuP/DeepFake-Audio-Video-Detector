@@ -1,55 +1,28 @@
-# Deployment Guide (Vercel)
+# Deploying Prism Studio
 
-This project is optimized for deployment on [Vercel](https://vercel.com).
+## Recommended: GitHub + Vercel
+This is the best way to deploy. It gives you automatic deployments every time you push code.
 
-## Option 1: Git Integration (Recommended)
-
-1.  **Push your code** to a Git provider (GitHub, GitLab, or Bitbucket).
-2.  Log in to your **Vercel Dashboard**.
-3.  Click **"Add New..."** -> **"Project"**.
-4.  Import your repository.
-5.  **Configure Project**:
-    *   **Framework Preset**: Vercel should automatically detect `Vite`.
-    *   **Root Directory**: `./` (default)
-    *   **Build Command**: `npm run build` (default)
-    *   **Output Directory**: `dist` (default)
-6.  **Environment Variables** (CRITICAL):
-    *   Expand the "Environment Variables" section.
-    *   Add the following variable:
-        *   **Key**: `VITE_API_KEY`
-        *   **Value**: Your Google Gemini API Key
-7.  Click **"Deploy"**.
-
-## Option 2: Vercel CLI
-
-If you prefer the command line:
-
-1.  Install Vercel CLI:
+### 1. Push to GitHub
+1.  **Create a new repository** on GitHub (e.g., `prism-studio`).
+2.  **Push your code**:
     ```bash
-    npm i -g vercel
+    git add .
+    git commit -m "Initial commit for Prism Studio"
+    git branch -M main
+    git remote add origin https://github.com/YOUR_USERNAME/prism-studio.git
+    git push -u origin main
     ```
-2.  Login:
-    ```bash
-    vercel login
-    ```
-3.  Deploy:
-    ```bash
-    vercel
-    ```
-4.  Follow the prompts. When asked about settings, the defaults are usually correct.
-5.  **Set Environment Variable**:
-    *   Go to the project settings in the Vercel Dashboard after the first deployment (which might fail if it needs the key at build time, though usually it's a runtime key for client-side apps, but Vite replaces it at build time).
-    *   **Important**: Since we use `import.meta.env`, the key is embedded at **build time**. You must set the Environment Variable in Vercel **BEFORE** the build runs.
-    *   If using CLI, you can set it via:
-        ```bash
-        vercel env add VITE_API_KEY
-        ```
-    *   Then redeploy:
-        ```bash
-        vercel --prod
-        ```
 
-## Troubleshooting
+### 2. Connect to Vercel
+1.  Go to [Vercel Dashboard](https://vercel.com/dashboard).
+2.  Click **"Add New..."** -> **"Project"**.
+3.  Select **"Continue with GitHub"**.
+4.  Find your `prism-studio` repository and click **"Import"**.
+5.  **Deploy**:
+    -   Leave all settings as default (Vercel auto-detects Vite/React).
+    -   Click **"Deploy"**.
 
-*   **Build Fails?** Check the logs. Ensure `@types/node` is installed (we added this).
-*   **App loads but API fails?** Check that `VITE_API_KEY` is set correctly in Vercel and that you redeployed *after* setting it.
+### 3. Done!
+Vercel will build your site and give you a live URL (e.g., `prism-studio.vercel.app`).
+Anytime you push changes to GitHub, Vercel will automatically update your site.

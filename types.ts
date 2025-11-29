@@ -14,3 +14,8 @@ export enum AnalysisStatus {
   COMPLETE = 'COMPLETE',
   ERROR = 'ERROR'
 }
+
+export interface SummaryOptions {
+  length: 'short' | 'medium' | 'long';
+  format: 'bullet-points' | 'paragraph';
+}
