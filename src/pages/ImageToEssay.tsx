@@ -10,17 +10,25 @@ export const ImageToEssay: React.FC = () => {
     const [status, setStatus] = useState<AnalysisStatus>(AnalysisStatus.IDLE);
     const [essay, setEssay] = useState<string | null>(null);
     const [copied, setCopied] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
     const handleFileSelect = async (file: File) => {
         setStatus(AnalysisStatus.ANALYZING);
         setEssay(null);
+        setError(null);
         try {
             const result = await generateEssay(file);
             setEssay(result);
             setStatus(AnalysisStatus.COMPLETE);
-        } catch (error) {
+        } catch (error: any) {
             console.error("Essay generation failed", error);
             setStatus(AnalysisStatus.ERROR);
+            if (error.message && error.message.includes("API Key is missing")) {
+                setError("API Key is missing. Please add VITE_API_KEY to your environment variables.");
+            } else {
+                // Show the actual error message for debugging
+                setError(error.message || "Failed to generate essay. Please check your API key and try again.");
+            }
         }
     };
 
@@ -79,6 +87,16 @@ export const ImageToEssay: React.FC = () => {
                         subtitle="Supports JPG, PNG, WEBP"
                         icon={<Sparkles className="w-10 h-10 text-pink-400 group-hover:text-pink-300 transition-colors" />}
                     />
+
+                    {status === AnalysisStatus.ERROR && error && (
+                        <motion.div
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="mt-4 p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-200 text-center backdrop-blur-sm"
+                        >
+                            {error}
+                        </motion.div>
+                    )}
                 </motion.div>
 
                 {/* Result Section */}

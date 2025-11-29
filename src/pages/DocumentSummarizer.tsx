@@ -48,7 +48,8 @@ export const DocumentSummarizer: React.FC = () => {
             setSummary(result);
         } catch (err) {
             console.error(err);
-            setError("Failed to generate summary. Please try again.");
+            const errorMessage = err instanceof Error ? err.message : "Failed to generate summary. Please try again.";
+            setError(errorMessage);
         } finally {
             setIsSummarizing(false);
         }

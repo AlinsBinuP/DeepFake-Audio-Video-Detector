@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { motion, AnimatePresence, Reorder } from 'framer-motion';
-import { FileImage, Download, Loader2, X, Upload, GripVertical, FilePlus, FileStack } from 'lucide-react';
+import { FileImage, Download, Loader2, X, Upload, GripVertical, FilePlus, FileStack, CheckCircle } from 'lucide-react';
 import { useDropzone } from 'react-dropzone';
 import jsPDF from 'jspdf';
 import { PDFDocument } from 'pdf-lib';
@@ -26,6 +26,7 @@ export const ImageToPdf: React.FC = () => {
     const [isGenerating, setIsGenerating] = useState(false);
     const [progress, setProgress] = useState(0);
     const [error, setError] = useState<string | null>(null);
+    const [generatedPdfUrl, setGeneratedPdfUrl] = useState<string | null>(null);
 
     // Image to PDF handlers
     const onDropImages = useCallback((acceptedFiles: File[]) => {
@@ -137,7 +138,10 @@ export const ImageToPdf: React.FC = () => {
                 pdf!.addImage(image.preview, 'JPEG', 0, 0, pdfWidth, pdfHeight);
             }
 
-            pdf!.save(`images-${Date.now()}.pdf`);
+            const pdfOutput = pdf!.output('blob');
+            const url = URL.createObjectURL(pdfOutput);
+            setGeneratedPdfUrl(url);
+
             setProgress(100);
             setTimeout(() => {
                 setIsGenerating(false);
@@ -173,15 +177,9 @@ export const ImageToPdf: React.FC = () => {
             }
 
             const pdfBytes = await mergedPdf.save();
-            const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+            const blob = new Blob([pdfBytes as any], { type: 'application/pdf' });
             const url = URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = `merged-${Date.now()}.pdf`;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            URL.revokeObjectURL(url);
+            setGeneratedPdfUrl(url);
 
             setProgress(100);
             setTimeout(() => {
@@ -249,8 +247,8 @@ export const ImageToPdf: React.FC = () => {
                         <button
                             onClick={() => handleModeChange('image-to-pdf')}
                             className={`flex-1 px-6 py-4 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-3 ${mode === 'image-to-pdf'
-                                    ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg'
-                                    : 'text-slate-400 hover:text-white hover:bg-white/5'
+                                ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg'
+                                : 'text-slate-400 hover:text-white hover:bg-white/5'
                                 }`}
                         >
                             <FileImage className="w-5 h-5" />
@@ -259,8 +257,8 @@ export const ImageToPdf: React.FC = () => {
                         <button
                             onClick={() => handleModeChange('merge-pdf')}
                             className={`flex-1 px-6 py-4 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-3 ${mode === 'merge-pdf'
-                                    ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg'
-                                    : 'text-slate-400 hover:text-white hover:bg-white/5'
+                                ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg'
+                                : 'text-slate-400 hover:text-white hover:bg-white/5'
                                 }`}
                         >
                             <FileStack className="w-5 h-5" />
@@ -453,6 +451,31 @@ export const ImageToPdf: React.FC = () => {
                                             animate={{ width: `${progress}%` }}
                                             transition={{ type: "spring", stiffness: 50 }}
                                         />
+                                    </motion.div>
+                                )}
+
+                                {/* Download Button (Manual) */}
+                                {generatedPdfUrl && !isGenerating && (
+                                    <motion.div
+                                        initial={{ opacity: 0, y: 10 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        className="mt-6 p-6 bg-emerald-500/10 border border-emerald-500/20 rounded-xl flex flex-col items-center gap-4"
+                                    >
+                                        <div className="flex items-center gap-2 text-emerald-400 font-medium">
+                                            <CheckCircle className="w-5 h-5" />
+                                            <span>PDF Ready!</span>
+                                        </div>
+                                        <a
+                                            href={generatedPdfUrl}
+                                            download={`document-${Date.now()}.pdf`}
+                                            className="px-8 py-3 bg-emerald-500 hover:bg-emerald-600 text-white font-semibold rounded-lg transition-colors flex items-center gap-2 shadow-lg"
+                                            onClick={() => {
+                                                // Optional: Clear state after download if desired, or keep it
+                                            }}
+                                        >
+                                            <Download className="w-4 h-4" />
+                                            Download PDF
+                                        </a>
                                     </motion.div>
                                 )}
                             </div>

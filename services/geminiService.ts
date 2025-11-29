@@ -22,12 +22,56 @@ const fileToBase64 = (file: File): Promise<string> => {
   });
 };
 
+// Extract text from PDF files
+const extractTextFromPDF = async (file: File): Promise<string> => {
+  try {
+    // Dynamically import pdfjs-dist
+    const pdfjsLib = await import('pdfjs-dist');
+
+    // Set worker path
+    pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.mjs';
+
+    // Read file as ArrayBuffer
+    const arrayBuffer = await file.arrayBuffer();
+
+    // Load PDF document
+    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+
+    let fullText = '';
+
+    // Extract text from each page
+    for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+      const page = await pdf.getPage(pageNum);
+      const textContent = await page.getTextContent();
+      const pageText = textContent.items.map((item: any) => item.str).join(' ');
+      fullText += pageText + '\n\n';
+    }
+
+    return fullText.trim();
+  } catch (error) {
+    console.error('PDF extraction error:', error);
+    throw new Error('Failed to extract text from PDF file.');
+  }
+};
+
+// Read text from TXT files
+const readTextFile = (file: File): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsText(file);
+    reader.onload = () => {
+      resolve(reader.result as string);
+    };
+    reader.onerror = (error) => reject(error);
+  });
+};
+
 export const analyzeMedia = async (file: File): Promise<AnalysisResult> => {
   try {
     const base64Data = await fileToBase64(file);
     const mimeType = file.type;
 
-    const modelId = "gemini-2.0-flash";
+    const modelId = "gemini-pro-vision";
 
     if (!ai) {
       throw new Error("API Key is missing. Please set VITE_API_KEY in .env file.");
@@ -100,7 +144,7 @@ export const generateEssay = async (file: File, prompt?: string): Promise<string
   try {
     const base64Data = await fileToBase64(file);
     const mimeType = file.type;
-    const modelId = "gemini-2.0-flash";
+    const modelId = "gemini-2.5-flash";
 
     if (!ai) {
       throw new Error("API Key is missing. Please set VITE_API_KEY in .env file.");
@@ -108,25 +152,32 @@ export const generateEssay = async (file: File, prompt?: string): Promise<string
 
     const response = await ai.models.generateContent({
       model: modelId,
-      contents: {
-        parts: [
-          {
-            inlineData: {
-              mimeType: mimeType,
-              data: base64Data,
+      contents: [
+        {
+          parts: [
+            {
+              inlineData: {
+                mimeType: mimeType,
+                data: base64Data,
+              },
             },
-          },
-          {
-            text: prompt || "Write a detailed, academic-style essay based on this image. Analyze its visual elements, context, and potential meaning.",
-          },
-        ],
-      },
+            {
+              text: prompt || "Write a detailed, academic-style essay based on this image. Analyze its visual elements, context, and potential meaning.",
+            },
+          ],
+        },
+      ],
     });
 
     return response.text || "Failed to generate essay.";
   } catch (error) {
     console.error("Essay Generation Error:", error);
-    throw new Error("Failed to generate essay.");
+    // Log more details for debugging
+    if (error instanceof Error) {
+      console.error("Error message:", error.message);
+      console.error("Error stack:", error.stack);
+    }
+    throw new Error(error instanceof Error ? error.message : "Failed to generate essay.");
   }
 };
 
@@ -159,47 +210,64 @@ export const generateImage = async (prompt: string): Promise<string> => {
 
 export const summarizeDocument = async (content: File | string, options: SummaryOptions): Promise<string> => {
   try {
-    const modelId = "gemini-2.0-flash";
+    const modelId = "gemini-2.5-flash";
 
     if (!ai) {
       throw new Error("API Key is missing. Please set VITE_API_KEY in .env file.");
     }
 
-    let parts: any[] = [];
+    let textContent = '';
 
+    // Extract text based on input type
     if (typeof content === 'string') {
-      parts.push({ text: content });
+      textContent = content;
     } else {
-      const base64Data = await fileToBase64(content);
-      parts.push({
-        inlineData: {
-          mimeType: content.type,
-          data: base64Data
-        }
-      });
+      // Handle file inputs
+      if (content.type === 'application/pdf') {
+        // Extract text from PDF
+        textContent = await extractTextFromPDF(content);
+      } else if (content.type === 'text/plain') {
+        // Read text file
+        textContent = await readTextFile(content);
+      } else {
+        throw new Error('Unsupported file type. Please upload a PDF or TXT file.');
+      }
     }
 
-    const prompt = `You are an expert document summarizer.
-    Please provide a summary of the provided content.
-    
-    Configuration:
-    - Length: ${options.length}
-    - Format: ${options.format}
-    
-    Ensure the summary is accurate, well-structured, and captures the main ideas.`;
+    // Prepare the prompt with the extracted text
+    const lengthGuide = {
+      short: '2-3 sentences',
+      medium: '1-2 paragraphs',
+      long: '3-4 paragraphs'
+    };
 
-    parts.push({ text: prompt });
+    const formatGuide = {
+      paragraph: 'Write the summary as flowing paragraphs.',
+      'bullet-points': 'Format the summary as bullet points with key takeaways.'
+    };
+
+    const prompt = `You are an expert document summarizer.
+Please provide a ${lengthGuide[options.length]} summary of the following content.
+${formatGuide[options.format]}
+
+Ensure the summary is accurate, well-structured, and captures the main ideas.
+
+Content to summarize:
+${textContent}`;
 
     const response = await ai.models.generateContent({
       model: modelId,
       contents: {
-        parts: parts,
+        parts: [{ text: prompt }],
       },
     });
 
     return response.text || "Failed to generate summary.";
   } catch (error) {
     console.error("Summarization Error:", error);
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
     throw new Error("Failed to summarize document.");
   }
 };
@@ -213,7 +281,7 @@ export const analyzeScene = async (file: File): Promise<{
   try {
     const base64Data = await fileToBase64(file);
     const mimeType = file.type;
-    const modelId = "gemini-2.0-flash";
+    const modelId = "gemini-2.5-flash";
 
     if (!ai) {
       throw new Error("API Key is missing. Please set VITE_API_KEY in .env file.");
@@ -273,7 +341,7 @@ export const summarizeYouTubeVideo = async (transcript: string, videoTitle: stri
   studyNotes: string;
 }> => {
   try {
-    const modelId = "gemini-2.0-flash";
+    const modelId = "gemini-2.5-flash";
 
     if (!ai) {
       throw new Error("API Key is missing. Please set VITE_API_KEY in .env file.");
