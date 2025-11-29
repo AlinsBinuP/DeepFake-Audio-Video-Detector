@@ -1,12 +1,23 @@
-const reader = new FileReader();
-reader.readAsDataURL(file);
-reader.onload = () => {
-  const result = reader.result as string;
-  // Remove the Data-URI prefix (e.g. "data:image/jpeg;base64,")
-  const base64Data = result.split(',')[1];
-  resolve(base64Data);
-};
-reader.onerror = (error) => reject(error);
+import { GoogleGenAI, Type } from "@google/genai";
+// Force rebuild
+import { AnalysisResult, SummaryOptions } from "../types";
+
+const apiKey = import.meta.env.VITE_API_KEY;
+console.log("Current API Key Prefix:", apiKey ? apiKey.substring(0, 8) + "..." : "Missing");
+
+const ai = apiKey ? new GoogleGenAI({ apiKey }) : null;
+
+const fileToBase64 = (file: File): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      const result = reader.result as string;
+      // Remove the Data-URI prefix (e.g. "data:image/jpeg;base64,")
+      const base64Data = result.split(',')[1];
+      resolve(base64Data);
+    };
+    reader.onerror = (error) => reject(error);
   });
 };
 
