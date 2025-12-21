@@ -19,7 +19,7 @@
 
 ### *Where Imagination Meets Intelligence*
 
-[![Prism Studio Landing](prism_landing.png)](prism_landing.png)
+[![Prism Studio Landing](landingpage.png)](https://prismstudioai.vercel.app/)
 
 [🌐 Live Demo](https://prismstudioai.vercel.app/) · [📝 Report Bug](https://github.com/yourusername/prism-studio/issues) · [✨ Request Feature](https://github.com/yourusername/prism-studio/issues)
 
