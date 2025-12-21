@@ -1,87 +1,134 @@
 <div align="center">
 
-# 🌈 Prism Studio
+<!-- Animated Header -->
+<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=0,2,25,30&height=300&section=header&text=Prism%20Studio&fontSize=90&animation=fadeIn&fontAlignY=38&desc=The%20Ultimate%20AI%20Creative%20Suite&descAlignY=51&descAlign=62" width="100%" />
 
-### The Ultimate AI Creative Suite
+<!-- Typing Effect -->
+<a href="https://git.io/typing-svg"><img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&weight=600&size=24&pause=1000&color=333333&background=00000000&center=true&vCenter=true&width=500&lines=Unleash+Your+Creativity;Detect+Deepfakes+Instantly;Generate+Stunning+Visuals;Transform+Your+Workflow" alt="Typing SVG" /></a>
 
-*Unleash your creativity with a powerhouse of AI tools in one beautiful workspace.*
+<br/>
 
-[![Live Demo](https://img.shields.io/badge/Live-Demo-blue?style=for-the-badge&logo=vercel)](https://deep-fake-audio-video-detector.vercel.app/)
-[![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react)](https://reactjs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
-[![Gemini AI](https://img.shields.io/badge/Gemini-2.0%20Flash-4285F4?style=for-the-badge&logo=google)](https://ai.google.dev/)
-[![Tailwind](https://img.shields.io/badge/Tailwind-3.4-06B6D4?style=for-the-badge&logo=tailwindcss)](https://tailwindcss.com/)
+<!-- Badges -->
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
+[![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)](https://reactjs.org/)
+[![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+[![Vercel](https://img.shields.io/badge/vercel-%23000000.svg?style=for-the-badge&logo=vercel&logoColor=white)](https://vercel.com/)
 
-![Prism Studio Banner](VerifiSight.png)
+<br/>
 
-[🌐 View Live](https://deep-fake-audio-video-detector.vercel.app/) · [📝 Report Bug](https://github.com/yourusername/prism-studio/issues) · [✨ Request Feature](https://github.com/yourusername/prism-studio/issues)
+### *Where Imagination Meets Intelligence*
+
+[🌐 Live Demo](https://deep-fake-audio-video-detector.vercel.app/) · [📝 Report Bug](https://github.com/yourusername/prism-studio/issues) · [✨ Request Feature](https://github.com/yourusername/prism-studio/issues)
 
 </div>
 
+<br/>
+
 ---
+
+<div align="center">
+<img src="https://capsule-render.vercel.app/api?type=rect&color=gradient&height=5&section=header&text=&animation=fadeIn" width="100%" />
+</div>
 
 ## 📑 Table of Contents
 
-- [Features](#-features)
-- [How It Works](#-how-it-works)
-- [Tech Stack](#-tech-stack)
-- [Quick Start](#-quick-start)
-- [Development](#-development)
-- [Deployment](#-deployment)
-- [Contributing](#-contributing)
-- [License](#-license)
+- [✨ Features](#-features)
+- [🏗️ How It Works](#-%EF%B8%8F-how-it-works)
+- [🛠️ Tech Stack](#-%EF%B8%8F-tech-stack)
+- [🚀 Quick Start](#-quick-start)
+- [💻 Development](#-development)
+- [🤝 Contributing](#-contributing)
+- [📜 License](#-license)
 
 ---
 
-## 🎨 Features
+## ✨ Features
 
-Prism Studio is a comprehensive suite of AI-powered tools designed to enhance your productivity and creativity.
+Experience a unified workspace consisting of three powerful pillars.
 
 <table>
 <tr>
-<td width="50%">
+<td width="50%" valign="top">
 
-### 🎨 **Creative Tools**
-- **Image Generator**: Create stunning visuals from text prompts.
-- **3D Motion**: Bring static images to life with 3D depth animations.
-- **Magic Eraser**: Remove unwanted objects from photos seamlessly.
-- **Background Remover**: Instant transparent backgrounds.
-- **Image Upscaler**: Enhance image resolution without losing quality.
-- **Image to PDF**: Convert your images into professional PDF documents.
+### 🎨 **Creative Studio**
+> *Transform ideas into reality.*
+
+- **Image Generator** 🖌️
+  - Create high-fidelity visuals from text prompts.
+- **3D Motion** 🌀
+  - Add depth and movement to static images.
+- **Magic Eraser** 🪄
+  - Seamlessly remove unwanted objects.
+- **Background Remover** ✂️
+  - Instant precision cutout and transparency.
+- **Image Upscaler** 🔍
+  - Enhanced resolution up to 4x.
+- **Image to PDF** 📄
+  - Professional document conversion.
 
 </td>
-<td width="50%">
+<td width="50%" valign="top">
 
-### 🛡️ **Security & Analysis**
-- **Deepfake Detector**: Advanced multimodal analysis to detect manipulated audio and video.
-- **Live Guard**: Real-time protection against digital threats (*Coming Soon*).
+### 🛡️ **Security & Intelligence**
+> *Protect and uphold the truth.*
 
-### ⚡ **Productivity**
-- **YouTube Summarizer**: Get concise notes and summaries from any YouTube video.
-- **Document Summarizer**:  Quickly digest long documents.
-- **Essay Writer**: Generate structured essays from images and prompts.
-- **Text to Speech**: Convert text into natural-sounding speech.
+- **Deepfake Detector** 🕵️‍♂️
+  - Multimodal analysis (Audio & Video) to detect manipulation.
+  - Granular confidence scoring.
+- **Live Guard** 🛡️ (*Coming Soon*)
+  - Real-time digital threat monitoring.
+
+### ⚡ **Productivity Hub**
+> *Work smarter, not harder.*
+
+- **YouTube Summarizer** 📺
+  - Extract detailed notes from long videos instantly.
+- **Document Summarizer** 📚
+  - Digest complex PDFs in seconds.
+- **Essay Writer** ✍️
+  - Structured content generation from prompts.
+- **Text to Speech** 🗣️
+  - Lifelike vocal synthesis and narration.
 
 </td>
 </tr>
 </table>
 
-> [!NOTE]
-> All tools are powered by state-of-the-art AI models, running continuously on optimized cloud infrastructure.
+---
+
+## 🏗️ How It Works
+
+Prism Studio routes your requests through specialized AI agents.
+
+```mermaid
+graph TD
+    User([User]) -->|Interacts| UI{Prism UI}
+    UI -->|Creative| Vision[Generative Vision Model]
+    UI -->|Security| Forensics[Forensic Analysis Engine]
+    UI -->|Text/Audio| NLP[Multimodal Gemini Core]
+    
+    Vision --> Result1[Images / 3D Assets]
+    Forensics --> Result2[Authenticity Report]
+    NLP --> Result3[Summaries / Essays / Audio]
+    
+    Result1 & Result2 & Result3 -->|Display| UI
+    
+    style UI fill:#6366f1,color:#fff,stroke:#fff
+    style Vision fill:#ec4899,color:#fff
+    style Forensics fill:#10b981,color:#fff
+    style NLP fill:#f59e0b,color:#fff
+```
 
 ---
 
-## 🏗️ Tech Stack
+## 🛠️ Tech Stack
 
-Built with the latest web technologies for performance and experience.
+We use the best tools to ensure speed, scalability, and beauty.
 
 <div align="center">
 
-| Core | Styles & UI | AI & ML | Build |
-|------|-------------|---------|-------|
-| ![React](https://img.shields.io/badge/React-19-black?logo=react) | ![Tailwind](https://img.shields.io/badge/Tailwind-CSS-black?logo=tailwindcss) | ![Gemini](https://img.shields.io/badge/Google-Gemini-black?logo=google) | ![Vite](https://img.shields.io/badge/Vite-Bundler-black?logo=vite) |
-| ![TypeScript](https://img.shields.io/badge/TypeScript-5-black?logo=typescript) | ![Framer Motion](https://img.shields.io/badge/Framer-Motion-black?logo=framer) | ![Tensorflow](https://img.shields.io/badge/TensorFlow.js-Library-black?logo=tensorflow) | ![Vercel](https://img.shields.io/badge/Vercel-Deploy-black?logo=vercel) |
-| ![React Router](https://img.shields.io/badge/React_Router-7-black?logo=reactrouter) | ![Lucide](https://img.shields.io/badge/Lucide-Icons-black?logo=lucide) | ![MediaPipe](https://img.shields.io/badge/MediaPipe-Vision-black?logo=google) | ![NPM](https://img.shields.io/badge/NPM-Manager-black?logo=npm) |
+[![My Skills](https://skillicons.dev/icons?i=react,ts,vite,tailwindcss,framer,tensorflow,vercel,github,nodejs,html,css,figma&perline=6)](https://skillicons.dev)
 
 </div>
 
@@ -91,76 +138,57 @@ Built with the latest web technologies for performance and experience.
 
 ### Prerequisites
 
-- **Node.js** (v18 or higher)
-- **Google Gemini API Key** ([Get one here](https://makersuite.google.com/app/apikey))
+- **Node.js** (v18+)
+- **Google Gemini API Key** ([Get Key](https://makersuite.google.com/app/apikey))
 
-### Installation
+### ⚡ Installation
 
-1. **Clone the repository**
+1. **Clone & Enter**
    ```bash
    git clone https://github.com/yourusername/prism-studio.git
    cd prism-studio
    ```
 
-2. **Install dependencies**
+2. **Install Dependencies**
    ```bash
    npm install
    ```
 
-3. **Configure Environment**
-   Create a `.env.local` file in the root directory:
+3. **Set Up Brain**
+   Create a `.env.local` file:
    ```env
    VITE_API_KEY=your_gemini_api_key_here
    ```
 
-4. **Start Development Server**
+4. **Launch**
    ```bash
    npm run dev
    ```
 
-Visit `http://localhost:5173` to explore Prism Studio! 🎉
+   Visit `http://localhost:5173` 🚀
 
 ---
 
-## 🛠️ Development
+## 💻 Development
 
-### Project Structure
+### 📂 Structure
 
-```
+```bash
 prism-studio/
-├── src/
-│   ├── pages/               # Individual tools (Detector, ImageGen, etc.)
-│   ├── components/          # Shared UI components (UploadZone, FloatingCard)
-│   ├── services/            # API integrations (Gemini, etc.)
-│   └── icons/               # Custom assets
-├── public/                  # Static assets
-└── ...config files
+├── 📂 src/
+│   ├── 📂 pages/          # The Toolset (Detector, Generators...)
+│   ├── 📂 components/     # UI Building Blocks
+│   ├── 📂 services/       # AI Integration Layer
+│   └── 📂 icons/          # Visual Assets
+├── 📂 public/             # Static Files
+└── 📄 package.json        # Dependencies
 ```
-
-### Available Scripts
-
-- `npm run dev`: Start the development environment.
-- `npm run build`: specialized build for production.
-- `npm run preview`: Preview the production build locally.
-
----
-
-## 🚢 Deployment
-
-**Prism Studio** is optimized for Vercel.
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/yourusername/prism-studio)
-
-1. Fork this repo.
-2. Connect to Vercel.
-3. Add your `VITE_API_KEY` in Vercel project settings.
-4. Deploy!
 
 ---
 
 ## 🤝 Contributing
 
-We welcome contributions!
+Contributions make the open-source community an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
 1. Fork the Project
 2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
@@ -170,7 +198,7 @@ We welcome contributions!
 
 ---
 
-## 📄 License
+## 📜 License
 
 Distributed under the MIT License. See `LICENSE` for more information.
 
@@ -178,34 +206,17 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ## 🙏 Acknowledgments
 
-- **Google Gemini** for the incredible multimodal AI capabilities.
-- **Vercel** for hosting and analytics.
-- **The Open Source Community** for the tools that make this possible.
+<div align="center">
+  <img src="https://img.shields.io/badge/Powered%20by-Gemini%20AI-4285F4?style=for-the-badge&logo=google&logoColor=white" />
+  <img src="https://img.shields.io/badge/Deployed%20on-Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white" />
+</div>
 
----
+<br/>
 
 <div align="center">
 
 ### Made with ❤️ by Alins Binu
 
-![Footer](https://capsule-render.vercel.app/api?type=waving&color=gradient&height=100&section=footer)
+<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=0,2,25,30&height=150&section=footer" width="100%" />
 
 </div>
-<div align="center"><!-- Animated Header Banner --><img src="https://www.google.com/search?q=https://capsule-render.vercel.app/api%3Ftype%3Dwaving%26color%3Dgradient%26height%3D280%26section%3Dheader%26text%3DPRISM%2520STUDIO%26fontSize%3D90%26animation%3DfadeIn%26fontAlignY%3D35" width="100%" />🌈 The Ultimate AI Creative SuiteA powerhouse of intelligence and imagination, unified in one elegant workspace.🌐 View Live · 📝 Report Bug · ✨ Request Feature</div>📑 Table of Contents✨ Key Features🏗️ How It Works🛠️ Tech Stack🚀 Quick Start🤝 Contributing✨ Key FeaturesPrism Studio bridges the gap between creative expression and digital security.<table width="100%"><tr><td width="50%" valign="top">🎨 Creative ToolsImage Generator • Transform text into high-fidelity visuals.3D Motion • Animate static images with neural depth mapping.Magic Eraser • Clean up photos with AI-powered inpainting.Background Remover • Instant precision masking.Image Upscaler • 4k enhancement without quality loss.Image to PDF • Professional document synthesis.</td><td width="50%" valign="top">🛡️ Security & ProductivityDeepfake Detector • Multimodal analysis for video/audio forgery.Live Guard • Coming Soon - Real-time digital threat monitoring.YouTube Summarizer • Concise intelligence from long-form video.Essay Writer • Structured generation from visual & text prompts.Text to Speech • Natural, emotive vocal synthesis.</td></tr></table>🏗️ How It WorksPrism Studio utilizes a Multi-Agent Neural Pipeline to process your data.graph TD
-    A[User Input/Upload] --> B{Prism Router}
-    B -->|Creative Task| C[Gemini Image/Vision API]
-    B -->|Security Task| D[TensorFlow.js Forgery Model]
-    B -->|Language Task| E[Gemini 2.0 Text Engine]
-    C --> F[Canvas Interaction Layer]
-    D --> G[Probability Analysis Report]
-    E --> H[Summarized / Generated Content]
-    F & G & H --> I[Unified UI Response]
-    
-    style B fill:#6366f1,color:#fff
-    style I fill:#10b981,color:#fff
-🛠️ Tech Stack<div align="center">Core FrameworkIntelligenceStyling & MotionBuild Tool<img src="https://www.google.com/search?q=https://skillicons.dev/icons%3Fi%3Dreact,ts" /><img src="https://www.google.com/search?q=https://skillicons.dev/icons%3Fi%3Dtensorflow" /><img src="https://www.google.com/search?q=https://skillicons.dev/icons%3Fi%3Dtailwind,framer" /><img src="https://www.google.com/search?q=https://skillicons.dev/icons%3Fi%3Dvite,vercel" />React 19Gemini AIFramer MotionVite / Vercel</div>🚀 Quick Start1. Clone & Installgit clone [https://github.com/yourusername/prism-studio.git](https://github.com/yourusername/prism-studio.git)
-cd prism-studio
-npm install
-2. Configure Brain (API)Create a .env.local in the root and add your Gemini API Key:VITE_API_KEY=your_gemini_api_key_here
-3. Launch the Studionpm run dev
-Visit http://localhost:5173 to start creating!🤝 ContributingWe believe in open-source innovation!Fork the Repo.Branch out (git checkout -b feature/AmazingFeature).Commit your changes (git commit -m 'Add some AmazingFeature').Push (git push origin feature/AmazingFeature).Open a Pull Request.<div align="center">Made with ❤️ by Alins Binu<!-- Animated Footer --><img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&height=100&section=footer" width="100%" /></div>
