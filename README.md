@@ -21,7 +21,7 @@
 
 [![Prism Studio Landing](landingpage.png)](https://prismstudioai.vercel.app/)
 
-[🌐 Live Demo](https://prismstudioai.vercel.app/) · [📝 Report Bug](https://github.com/yourusername/prism-studio/issues) · [✨ Request Feature](https://github.com/yourusername/prism-studio/issues)
+[🌐 Live Demo](https://prismstudioai.vercel.app/) · [📝 Report Bug](https://github.com/AlinsBinuP/DeepFake-Audio-Video-Detector/issues) · [✨ Request Feature](https://github.com/AlinsBinuP/DeepFake-Audio-Video-Detector/issues)
 
 </div>
 
