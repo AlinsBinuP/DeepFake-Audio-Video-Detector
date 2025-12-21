@@ -19,6 +19,8 @@
 
 ### *Where Imagination Meets Intelligence*
 
+[![Prism Studio Landing](prism_landing.png)](prism_landing.png)
+
 [🌐 Live Demo](https://deep-fake-audio-video-detector.vercel.app/) · [📝 Report Bug](https://github.com/yourusername/prism-studio/issues) · [✨ Request Feature](https://github.com/yourusername/prism-studio/issues)
 
 </div>
