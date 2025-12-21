@@ -13,15 +13,15 @@
 [![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)](https://reactjs.org/)
 [![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
-[![Vercel](https://img.shields.io/badge/vercel-%23000000.svg?style=for-the-badge&logo=vercel&logoColor=white)](https://vercel.com/)
+[![Live Demo](https://img.shields.io/badge/Live-Demo-blue?style=for-the-badge&logo=vercel)](https://prismstudioai.vercel.app/)
 
 <br/>
 
 ### *Where Imagination Meets Intelligence*
 
-[![Prism Studio Landing](landingpage.png)](landingpage.png)
+[![Prism Studio Landing](prism_landing.png)](prism_landing.png)
 
-[🌐 Live Demo](https://deep-fake-audio-video-detector.vercel.app/) · [📝 Report Bug](https://github.com/yourusername/prism-studio/issues) · [✨ Request Feature](https://github.com/yourusername/prism-studio/issues)
+[🌐 Live Demo](https://prismstudioai.vercel.app/) · [📝 Report Bug](https://github.com/yourusername/prism-studio/issues) · [✨ Request Feature](https://github.com/yourusername/prism-studio/issues)
 
 </div>
 
