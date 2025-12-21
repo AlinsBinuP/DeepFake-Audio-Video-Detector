@@ -1,18 +1,1 @@
-<div align="center"><!-- ANIMATED HEADER --><img src="https://www.google.com/search?q=https://capsule-render.vercel.app/api%3Ftype%3Dwaving%26color%3Dgradient%26height%3D280%26section%3Dheader%26text%3DPRISM%2520STUDIO%26fontSize%3D90%26animation%3Dtwinkling%26fontAlignY%3D35" width="100%" /><!-- TYPING ANIMATION --><a href="https://git.io/typing-svg"><img src="https://www.google.com/search?q=https://readme-typing-svg.demolab.com%3Ffont%3DFira%2BCode%26pause%3D1000%26color%3D4285F4%26center%3Dtrue%26vCenter%3Dtrue%26width%3D435%26lines%3DThe%2BUltimate%2BAI%2BCreative%2BSuite%3BPowered%2Bby%2BGemini%2B2.0%2BFlash%3BDetect%2BDeepfakes%2BInstantly%3BGenerate%2B3D%2BMotion%2Bfrom%2BImages" alt="Typing SVG" /></a><p align="center"><img src="https://www.google.com/search?q=https://img.shields.io/badge/Status-Live-success%3Fstyle%3Dfor-the-badge%26logo%3Dstatuspage" /><img src="https://www.google.com/search?q=https://img.shields.io/badge/Version-1.2.0-blue%3Fstyle%3Dfor-the-badge%26logo%3Dsemver" /><img src="https://www.google.com/search?q=https://img.shields.io/github/stars/yourusername/prism-studio%3Fstyle%3Dfor-the-badge%26color%3Dgold%26logo%3Dgithub" /></p>🌐 Explore Live · 📝 Report Bug · ✨ Request Feature</div>📑 Table of Contents✨ Key Features🏗️ How It Works🛠️ Tech Stack📊 Activity🚀 Quick Start✨ Key FeaturesPrism Studio leverages a neural-first approach to unify creative generation and digital forensics.<table width="100%"><tr><td width="50%" valign="top">🎨 Creative StudioImage Generator • Text-to-masterpiece.3D Motion • Animate static depth.Magic Eraser • Neural inpainting.Background Remover • 1-click masking.Image Upscaler • 4k Super-resolution.</td><td width="50%" valign="top">🛡️ Forensic & LogicDeepfake Detector • Video/Audio analysis.Live Guard • Real-time protection.YouTube Summarizer • Instant video notes.Essay Writer • Structured AI drafting.Text to Speech • Emotive vocal synthesis.</td></tr></table>🏗️ How It WorksThe Prism Router dynamically orchestrates requests between local inference and cloud intelligence.graph TD
-    A[User Input] --> B{Neural Router}
-    B -->|Creative| C[Gemini Image Engine]
-    B -->|Security| D[TF.js Forgery Model]
-    B -->|Logic| E[Gemini 2.0 Text]
-    C --> F[Animated Canvas]
-    D --> G[Analysis Dashboard]
-    E --> H[Knowledge Output]
-    F & G & H --> I[Unified UI Response]
-    
-    style B fill:#6366f1,color:#fff
-    style I fill:#10b981,color:#fff
-🛠️ Tech Stack<div align="center">Modern. Fast. Animated.</div>📊 Activity & Stats<div align="center"><!-- ANIMATED GITHUB STATS --><img src="https://www.google.com/search?q=https://github-readme-stats.vercel.app/api%3Fusername%3Dyourusername%26show_icons%3Dtrue%26theme%3Dradical%26hide_border%3Dtrue%26count_private%3Dtrue" height="150" /><img src="https://www.google.com/search?q=https://github-readme-streak-stats.herokuapp.com/%3Fuser%3Dyourusername%26theme%3Dradical%26hide_border%3Dtrue" height="150" /></div>🚀 Quick Start1. Clone & Ignitegit clone [https://github.com/yourusername/prism-studio.git](https://github.com/yourusername/prism-studio.git)
-cd prism-studio
-npm install
-2. Configure Neural BridgeAdd your Gemini API Key to .env.local:VITE_API_KEY=your_key_here
-3. Launchnpm run dev
-🤝 ContributingJoin the evolution!Fork the Repo.Branch (git checkout -b feature/NewAnimation).Commit (git commit -m 'Added Fluid Motion').Push & Open a Pull Request.<div align="center">Built for the Next Generation of CreatorsCrafted with ❤️ by Alins Binu<!-- Animated Footer --><img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&height=100&section=footer" width="100%" /></div>
+README.md
